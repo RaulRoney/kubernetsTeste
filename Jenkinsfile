@@ -1,7 +1,6 @@
 pipeline {
      agent {
         kubernetes {
-            label 'kubejenkins'  // Label do nó Kubernetes, se necessário
             defaultContainer 'jnlp'  // Nome do container JNLP ou do container principal do pod
         }
     }
