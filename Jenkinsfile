@@ -29,7 +29,7 @@ pipeline {
         stage("Deploy no kubernetes") {
             steps {
                 sh "echo 'envio da imagem'"
-                withKubeConfig([credentialsId: 'kubeconfig']) {
+                /*withKubeConfig([credentialsId: 'kubeconfig']) {
                     sh 'kubectl apply -f 00-role.yml \
               -f 00-account.yml \
               -f 01-role-binding.yml \
@@ -37,13 +37,13 @@ pipeline {
               -f 02-traefik-services.yml \
               -f 03-whoami.yml \
               -f 03-whoami-services.yml \
-              -f 04-whoami-ingress.yml '
+              -f 04-whoami-ingress.yml '  */
             }
-                /*script {
+                script {
                     sh '''
-                    kubectl apply -f xxxxx.yml -n ${K8S_NAMESPACE}
+                    kubectl apply -f traefik.yml -n ${K8S_NAMESPACE}
                     '''
-                }*/
+                }
             }
         }
     }
