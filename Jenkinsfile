@@ -3,7 +3,7 @@ pipeline {
 
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
-        DOCKER_TAG = "traefikImageTeste2"
+        DOCKER_TAG = "traefikImageTeste3"
         DOCKER_REGISTRY = "docker.io"
         K8S_NAMESPACE =  "default"
 
