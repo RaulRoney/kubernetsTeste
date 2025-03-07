@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-route
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`nginx.local`) && PathPrefix(`/stripit`)
+      kind: Rule
+      middlewares:
+        - name: stripprefix 
+      services:
+        - name: nginx
+          port: 80

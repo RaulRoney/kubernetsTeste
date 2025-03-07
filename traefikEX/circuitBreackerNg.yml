@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: circuit-breaker
+spec:
+  circuitBreaker:
+    expression: ResponseCodeRatio(500, 600, 0, 600) > 0.30 ||  NetworkErrorRatio() > 0.10
+    checkPeriod: "100ms"
+    fallbackDuration: "10s"
+    recoveryDuration: "10s"
+    responseCode: 503
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-ingress
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`nginx.local`) && PathPrefix(`/api`)
+      kind: Rule
+      middlewares:
+        - name: circuit-breaker
+      services:
+        - name: nginx
+          port: 80
