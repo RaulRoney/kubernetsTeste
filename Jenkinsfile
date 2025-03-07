@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent kubejenkins
 
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
