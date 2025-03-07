@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
@@ -48,6 +48,7 @@ pipeline {
         }
     }
 }
+
 
 
     
