@@ -1,5 +1,5 @@
 pipeline {
-    agent {kubernetes}
+    agent kubernetes
 
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
