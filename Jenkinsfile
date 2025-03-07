@@ -37,8 +37,8 @@ pipeline {
               -f 02-traefik-services.yml \
               -f 03-whoami.yml \
               -f 03-whoami-services.yml \
-              -f 04-whoami-ingress.yml '  */
-            }
+              -f 04-whoami-ingress.yml '  
+            }*/
                 script {
                     sh '''
                     kubectl apply -f traefik.yml -n ${K8S_NAMESPACE}
