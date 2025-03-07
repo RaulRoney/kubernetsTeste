@@ -1,9 +1,14 @@
 pipeline {
-    agent kubernetes
+     agent {
+        kubernetes {
+            label 'kubejenkins'  // Label do nó Kubernetes, se necessário
+            defaultContainer 'jnlp'  // Nome do container JNLP ou do container principal do pod
+        }
+    }
 
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
-        DOCKER_TAG = "traefikImageTeste3"
+        DOCKER_TAG = "traefikImageTeste2"
         DOCKER_REGISTRY = "docker.io"
         K8S_NAMESPACE =  "default"
 
@@ -12,7 +17,7 @@ pipeline {
         stage("build Docker image") {
             steps {
                 script {
-                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f ./Dockerfile ./")
+                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f /var/jenkins_home/workspace/kube_teste/Dockerfile .")
                 }
             }
         }
@@ -48,6 +53,7 @@ pipeline {
         }
     }
 }
+
 
 
 
