@@ -9,16 +9,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                
-                git branch: 'main', url: 'https://github.com/RaulRoney/kubernetsTeste.git'
-            }
-        }
         stage("Build Docker Image") {
             steps {
                 script {
-                    
                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", ".")
                 }
             }
@@ -27,7 +20,6 @@ pipeline {
             steps {
                 sh "echo 'Envio da imagem'"
                 script {
-                    
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         app.push("${DOCKER_TAG}")
                     }
@@ -40,7 +32,6 @@ pipeline {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
                     dir('traefikEX') {
                         sh '''
-                        // Aplica os manifestos YAML no Kubernetes
                         kubectl apply -f 00-role.yml \
                         -f 00-account.yml \
                         -f 01-role-binding.yml \
