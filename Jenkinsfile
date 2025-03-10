@@ -12,7 +12,7 @@ pipeline {
         stage("build Docker image") {
             steps {
                 script {
-                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f ./Dockerfile.")
+                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", ".")
                 }
             }
         }
