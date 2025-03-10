@@ -1,10 +1,6 @@
 pipeline {
-     agent {
-        kubernetes {
-            defaultContainer 'jnlp'  // Nome do container JNLP ou do container principal do pod
-        }
-    }
-
+     agent any
+     
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
         DOCKER_TAG = "traefikImageTeste2"
