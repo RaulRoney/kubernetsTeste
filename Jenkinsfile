@@ -1,9 +1,9 @@
 pipeline {
      agent any
-     
+
     environment {
     DOCKER_IMAGE = "raulrfs/repositorio-teste"
-        DOCKER_TAG = "traefikImageTeste2"
+        DOCKER_TAG = "traefikImageTeste3"
         DOCKER_REGISTRY = "docker.io"
         K8S_NAMESPACE =  "default"
 
@@ -12,7 +12,7 @@ pipeline {
         stage("build Docker image") {
             steps {
                 script {
-                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f /var/jenkins_home/workspace/kube_teste/Dockerfile .")
+                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f ./Dockerfile.")
                 }
             }
         }
