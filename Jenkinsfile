@@ -1,65 +1,52 @@
 pipeline {
-    agent any
+     agent any
 
     environment {
-        DOCKER_IMAGE = "raulrfs/repositorio-teste"
+    DOCKER_IMAGE = "raulrfs/repositorio-teste"
         DOCKER_TAG = "traefikImageTeste3"
-        DOCKER_REGISTRY = "https://registry.hub.docker.com"
-        K8S_NAMESPACE = "default"
-    }
+        DOCKER_REGISTRY = "docker.io"
+        K8S_NAMESPACE =  "default"
 
+    }
     stages {
-        stage('Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Docker Image') {
+        stage("build Docker image") {
             steps {
                 script {
-                    docker.withRegistry("${DOCKER_REGISTRY}", 'dockerhub') {
-                        docker.image('docker:latest').inside {
-                            sh """
-                                docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -f ./Dockerfile .
-                            """
-                        }
-                    }
+                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f ./Dockerfile.")
                 }
             }
         }
-
-        stage('Push Docker Image') {
+        stage("push Docker Image") {
             steps {
-                script {
-                    docker.withRegistry("${DOCKER_REGISTRY}", 'dockerhub') {
-                        sh """
-                            docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
-                        """
-                    }
+                sh "echo 'envio da imagem'"
+                           
                 }
             }
         }
-
-        stage('Deploy no Kubernetes') {
+        stage("Deploy no kubernetes") {
             steps {
+                sh "echo 'envio da imagem'"
+                /*withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh 'kubectl apply -f 00-role.yml \
+              -f 00-account.yml \
+              -f 01-role-binding.yml \
+              -f 02-traefik.yml \
+              -f 02-traefik-services.yml \
+              -f 03-whoami.yml \
+              -f 03-whoami-services.yml \
+              -f 04-whoami-ingress.yml '  
+            }*/
                 script {
-                    withKubeConfig([credentialsId: 'kubeconfig']) {
-                        sh """
-                            kubectl apply -f traefik.yml -n ${K8S_NAMESPACE}
-                        """
-                    }
+                    sh '''
+                    kubectl apply -f traefik.yml -n ${K8S_NAMESPACE}
+                    '''
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline executada com sucesso!'
-        }
-        failure {
-            echo 'Pipeline falhou. Verifique os logs para mais detalhes.'
         }
     }
 }
+
+
+
+
+    
