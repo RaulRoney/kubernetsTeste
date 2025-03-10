@@ -2,16 +2,23 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "raulrfs/repositorio-teste"
-        DOCKER_TAG = "traefikImageTeste3"
-        DOCKER_REGISTRY = "docker.io"
-        K8S_NAMESPACE = "default"
+        DOCKER_IMAGE = "raulrfs/repositorio-teste" // Nome da imagem Docker
+        DOCKER_TAG = "traefikImageTeste3"           // Tag da imagem Docker
+        DOCKER_REGISTRY = "docker.io"               // Registry Docker
+        K8S_NAMESPACE = "default"                   // Namespace do Kubernetes
     }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                // Clona o repositório Git
+                git branch: 'main', url: 'https://github.com/myorg/myrepo.git'
+            }
+        }
         stage("Build Docker Image") {
             steps {
                 script {
+                    // Constrói a imagem Docker usando o Dockerfile no diretório atual
                     app = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", ".")
                 }
             }
@@ -20,6 +27,7 @@ pipeline {
             steps {
                 sh "echo 'Envio da imagem'"
                 script {
+                    // Envia a imagem Docker para o registry (Docker Hub)
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         app.push("${DOCKER_TAG}")
                     }
