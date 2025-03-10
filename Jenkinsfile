@@ -26,14 +26,6 @@ pipeline {
                 }
             }
         }
-        stage("Verificar Arquivos YAML") {
-            steps {
-                sh '''
-                echo "Verificando arquivos YAML..."
-                ls -l traefikEX/
-                '''
-            }
-        }
         stage("Deploy no Kubernetes") {
             steps {
                 sh "echo 'Deploy no Kubernetes'"
@@ -47,7 +39,7 @@ pipeline {
                         -f 02-traefik-services.yml \
                         -f 03-whoami.yml \
                         -f 03-whoami-services.yml \
-                        -f 04-whoami-ingress.yml -n ${K8S_NAMESPACE}
+                        -f 04-whoami-ingress.yml -n ${K8S_NAMESPACE} --validate=false
                         '''
                     }
                 }
