@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Clona o repositório Git
-                git branch: 'main', url: 'https://github.com/myorg/myrepo.git'
+                git branch: 'main', url: 'https://github.com/RaulRoney/kubernetsTeste.git'
             }
         }
         stage("Build Docker Image") {
